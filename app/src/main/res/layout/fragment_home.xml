@@ -75,93 +75,221 @@
         android:paddingTop="112dp"
         android:paddingBottom="48dp">
 
-        <TextView
-            android:id="@+id/homeApp1"
-            style="@style/TextLarge"
+        <LinearLayout
+            android:id="@+id/homeAppContainer1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:hint="@string/app"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
             android:paddingVertical="@dimen/home_app_padding_vertical"
             android:tag="@string/tag_1"
             android:visibility="gone"
-            tools:visibility="visible" />
+            tools:visibility="visible">
 
-        <TextView
-            android:id="@+id/homeApp2"
-            style="@style/TextLarge"
+            <ImageView
+                android:id="@+id/homeAppIcon1"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_marginEnd="12dp"
+                android:contentDescription="@string/app"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/homeApp1"
+                style="@style/TextLarge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="@string/app" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/homeAppContainer2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:hint="@string/app"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
             android:paddingVertical="@dimen/home_app_padding_vertical"
             android:tag="@string/tag_2"
             android:visibility="gone"
-            tools:visibility="visible" />
+            tools:visibility="visible">
 
-        <TextView
-            android:id="@+id/homeApp3"
-            style="@style/TextLarge"
+            <ImageView
+                android:id="@+id/homeAppIcon2"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_marginEnd="12dp"
+                android:contentDescription="@string/app"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/homeApp2"
+                style="@style/TextLarge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="@string/app" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/homeAppContainer3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:hint="@string/app"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
             android:paddingVertical="@dimen/home_app_padding_vertical"
             android:tag="@string/tag_3"
             android:visibility="gone"
-            tools:visibility="visible" />
+            tools:visibility="visible">
 
-        <TextView
-            android:id="@+id/homeApp4"
-            style="@style/TextLarge"
+            <ImageView
+                android:id="@+id/homeAppIcon3"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_marginEnd="12dp"
+                android:contentDescription="@string/app"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/homeApp3"
+                style="@style/TextLarge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="@string/app" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/homeAppContainer4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:hint="@string/app"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
             android:paddingVertical="@dimen/home_app_padding_vertical"
             android:tag="@string/tag_4"
             android:visibility="gone"
-            tools:visibility="visible" />
+            tools:visibility="visible">
 
-        <TextView
-            android:id="@+id/homeApp5"
-            style="@style/TextLarge"
+            <ImageView
+                android:id="@+id/homeAppIcon4"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_marginEnd="12dp"
+                android:contentDescription="@string/app"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/homeApp4"
+                style="@style/TextLarge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="@string/app" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/homeAppContainer5"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:hint="@string/app"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
             android:paddingVertical="@dimen/home_app_padding_vertical"
             android:tag="@string/tag_5"
             android:visibility="gone"
-            tools:visibility="visible" />
+            tools:visibility="visible">
 
-        <TextView
-            android:id="@+id/homeApp6"
-            style="@style/TextLarge"
+            <ImageView
+                android:id="@+id/homeAppIcon5"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_marginEnd="12dp"
+                android:contentDescription="@string/app"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/homeApp5"
+                style="@style/TextLarge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="@string/app" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/homeAppContainer6"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:hint="@string/app"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
             android:paddingVertical="@dimen/home_app_padding_vertical"
             android:tag="@string/tag_6"
             android:visibility="gone"
-            tools:visibility="visible" />
+            tools:visibility="visible">
 
-        <TextView
-            android:id="@+id/homeApp7"
-            style="@style/TextLarge"
+            <ImageView
+                android:id="@+id/homeAppIcon6"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_marginEnd="12dp"
+                android:contentDescription="@string/app"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/homeApp6"
+                style="@style/TextLarge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="@string/app" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/homeAppContainer7"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:hint="@string/app"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
             android:paddingVertical="@dimen/home_app_padding_vertical"
             android:tag="@string/tag_7"
             android:visibility="gone"
-            tools:visibility="visible" />
+            tools:visibility="visible">
 
-        <TextView
-            android:id="@+id/homeApp8"
-            style="@style/TextLarge"
+            <ImageView
+                android:id="@+id/homeAppIcon7"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_marginEnd="12dp"
+                android:contentDescription="@string/app"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/homeApp7"
+                style="@style/TextLarge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="@string/app" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/homeAppContainer8"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:hint="@string/app"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
             android:paddingVertical="@dimen/home_app_padding_vertical"
             android:tag="@string/tag_8"
             android:visibility="gone"
-            tools:visibility="visible" />
+            tools:visibility="visible">
+
+            <ImageView
+                android:id="@+id/homeAppIcon8"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_marginEnd="12dp"
+                android:contentDescription="@string/app"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/homeApp8"
+                style="@style/TextLarge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="@string/app" />
+        </LinearLayout>
 
     </LinearLayout>
 

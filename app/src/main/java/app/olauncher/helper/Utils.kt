@@ -79,18 +79,21 @@ suspend fun getAppsList(
             val userManager = context.getSystemService(Context.USER_SERVICE) as UserManager
             val launcherApps = context.getSystemService(Context.LAUNCHER_APPS_SERVICE) as LauncherApps
             val collator = Collator.getInstance()
+            val density = context.resources.displayMetrics.densityDpi
 
             for (profile in userManager.userProfiles) {
                 for (app in launcherApps.getActivityList(null, profile)) {
 
                     val appLabelShown = prefs.getAppRenameLabel(app.applicationInfo.packageName).ifBlank { app.label.toString() }
+                    val appIcon = app.getBadgedIcon(density)
                     val appModel = AppModel(
                         appLabelShown,
                         collator.getCollationKey(app.label.toString()),
                         app.applicationInfo.packageName,
                         app.componentName.className,
                         (System.currentTimeMillis() - app.firstInstallTime) < Constants.ONE_HOUR_IN_MILLIS,
-                        profile
+                        profile,
+                        appIcon
                     )
 
                     // if the current app is not OLauncher
@@ -136,6 +139,18 @@ fun isPackageInstalled(context: Context, packageName: String, userString: String
     val activityInfo = launcher.getActivityList(packageName, getUserHandleFromString(context, userString))
     if (activityInfo.size > 0) return true
     return false
+}
+
+fun getAppIcon(context: Context, packageName: String, userHandle: UserHandle): android.graphics.drawable.Drawable? {
+    return try {
+        val launcherApps = context.getSystemService(Context.LAUNCHER_APPS_SERVICE) as LauncherApps
+        val density = context.resources.displayMetrics.densityDpi
+        val activityList = launcherApps.getActivityList(packageName, userHandle)
+        activityList.firstOrNull()?.getBadgedIcon(density)
+    } catch (e: Exception) {
+        e.printStackTrace()
+        null
+    }
 }
 
 fun getUserHandleFromString(context: Context, userHandleString: String): UserHandle {

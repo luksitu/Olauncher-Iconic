@@ -162,6 +162,14 @@ class AppDrawerAdapter(
                 appTitle.gravity = appLabelGravity
                 otherProfileIndicator.isVisible = appModel.user != myUserHandle
 
+                // Set the app icon
+                if (appModel.appIcon != null && appModel.appPackage.isNotEmpty()) {
+                    appIcon.setImageDrawable(appModel.appIcon)
+                    appIcon.visibility = View.VISIBLE
+                } else {
+                    appIcon.visibility = View.GONE
+                }
+
                 appTitle.setOnClickListener { clickListener(appModel) }
                 appTitle.setOnLongClickListener {
                     if (appModel.appPackage.isNotEmpty()) {
