@@ -371,25 +371,53 @@ class HomeFragment : Fragment(), View.OnClickListener, View.OnLongClickListener 
         packageName: String,
         userString: String
     ): Boolean {
+        val displayMode = prefs.homeDisplayMode
+        
         if (packageName.isNotEmpty() && isPackageInstalled(requireContext(), packageName, userString)) {
-            textView.text = appName
-
-            // Load and set the icon with scaled size
-            val userHandle = getUserHandleFromString(requireContext(), userString)
-            val icon = getAppIcon(requireContext(), packageName, userHandle)
-            if (icon != null && iconView != null) {
-                val iconSize = getIconSizeForTextScale()
-                iconView.layoutParams.width = iconSize
-                iconView.layoutParams.height = iconSize
-                iconView.setImageDrawable(icon)
-                iconView.visibility = View.VISIBLE
-            } else {
-                iconView?.visibility = View.GONE
+            // Handle text visibility based on display mode
+            when (displayMode) {
+                Constants.HomeDisplayMode.TEXT_ONLY -> {
+                    textView.text = appName
+                    textView.visibility = View.VISIBLE
+                    iconView?.visibility = View.GONE
+                }
+                Constants.HomeDisplayMode.ICON_ONLY -> {
+                    textView.visibility = View.GONE
+                    // Load and set the icon
+                    val userHandle = getUserHandleFromString(requireContext(), userString)
+                    val icon = getAppIcon(requireContext(), packageName, userHandle)
+                    if (icon != null && iconView != null) {
+                        val iconSize = getIconSizeForTextScale()
+                        iconView.layoutParams.width = iconSize
+                        iconView.layoutParams.height = iconSize
+                        iconView.setImageDrawable(icon)
+                        iconView.visibility = View.VISIBLE
+                    } else {
+                        iconView?.visibility = View.GONE
+                    }
+                }
+                else -> { // ICON_AND_TEXT
+                    textView.text = appName
+                    textView.visibility = View.VISIBLE
+                    // Load and set the icon with scaled size
+                    val userHandle = getUserHandleFromString(requireContext(), userString)
+                    val icon = getAppIcon(requireContext(), packageName, userHandle)
+                    if (icon != null && iconView != null) {
+                        val iconSize = getIconSizeForTextScale()
+                        iconView.layoutParams.width = iconSize
+                        iconView.layoutParams.height = iconSize
+                        iconView.setImageDrawable(icon)
+                        iconView.visibility = View.VISIBLE
+                    } else {
+                        iconView?.visibility = View.GONE
+                    }
+                }
             }
             return true
         }
         // No app assigned - show placeholder text only, hide icon
         textView.text = ""
+        textView.visibility = View.VISIBLE
         iconView?.visibility = View.GONE
         return false
     }

@@ -56,6 +56,12 @@ object Constants {
         const val SEVEN = 1.3f
     }
 
+    object HomeDisplayMode {
+        const val TEXT_ONLY = 0
+        const val ICON_AND_TEXT = 1
+        const val ICON_ONLY = 2
+    }
+
     object CharacterIndicator {
         const val SHOW = 102
         const val HIDE = 101

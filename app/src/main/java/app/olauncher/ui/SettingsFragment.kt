@@ -78,6 +78,7 @@ class SettingsFragment : Fragment(), View.OnClickListener, View.OnLongClickListe
         populateAlignment()
         populateStatusBar()
         populateDateTime()
+        populateDisplayMode()
         populateSwipeApps()
         populateSwipeDownAction()
         populateActionHints()
@@ -91,6 +92,7 @@ class SettingsFragment : Fragment(), View.OnClickListener, View.OnLongClickListe
         binding.appThemeSelectLayout.visibility = View.GONE
         binding.swipeDownSelectLayout.visibility = View.GONE
         binding.textSizesLayout.visibility = View.GONE
+        binding.displayModeSelectLayout?.visibility = View.GONE
         if (view.id != R.id.alignmentBottom)
             binding.alignmentSelectLayout.visibility = View.GONE
 
@@ -111,6 +113,10 @@ class SettingsFragment : Fragment(), View.OnClickListener, View.OnLongClickListe
             R.id.alignmentRight -> viewModel.updateHomeAlignment(Gravity.END)
             R.id.alignmentBottom -> updateHomeBottomAlignment()
             R.id.statusBar -> toggleStatusBar()
+            R.id.homeDisplayMode -> binding.displayModeSelectLayout?.visibility = View.VISIBLE
+            R.id.displayModeTextOnly -> updateDisplayMode(Constants.HomeDisplayMode.TEXT_ONLY)
+            R.id.displayModeIconText -> updateDisplayMode(Constants.HomeDisplayMode.ICON_AND_TEXT)
+            R.id.displayModeIconOnly -> updateDisplayMode(Constants.HomeDisplayMode.ICON_ONLY)
             R.id.dateTime -> binding.dateTimeSelectLayout.visibility = View.VISIBLE
             R.id.dateTimeOn -> toggleDateTime(Constants.DateTime.ON)
             R.id.dateTimeOff -> toggleDateTime(Constants.DateTime.OFF)
@@ -212,6 +218,10 @@ class SettingsFragment : Fragment(), View.OnClickListener, View.OnLongClickListe
         binding.dateTimeOn.setOnClickListener(this)
         binding.dateTimeOff.setOnClickListener(this)
         binding.dateOnly.setOnClickListener(this)
+        binding.homeDisplayMode?.setOnClickListener(this)
+        binding.displayModeTextOnly?.setOnClickListener(this)
+        binding.displayModeIconText?.setOnClickListener(this)
+        binding.displayModeIconOnly?.setOnClickListener(this)
         binding.swipeLeftApp.setOnClickListener(this)
         binding.swipeRightApp.setOnClickListener(this)
         binding.swipeDownAction.setOnClickListener(this)
@@ -329,6 +339,22 @@ class SettingsFragment : Fragment(), View.OnClickListener, View.OnLongClickListe
                 else -> R.string.off
             }
         )
+    }
+
+    private fun updateDisplayMode(mode: Int) {
+        if (prefs.homeDisplayMode == mode) return
+        prefs.homeDisplayMode = mode
+        populateDisplayMode()
+        viewModel.refreshHome(false)
+    }
+
+    private fun populateDisplayMode() {
+        binding.homeDisplayMode?.text = when (prefs.homeDisplayMode) {
+            Constants.HomeDisplayMode.TEXT_ONLY -> getString(R.string.text_only)
+            Constants.HomeDisplayMode.ICON_AND_TEXT -> getString(R.string.icon_and_text)
+            Constants.HomeDisplayMode.ICON_ONLY -> getString(R.string.icon_only)
+            else -> getString(R.string.icon_and_text)
+        }
     }
 
     private fun showStatusBar() {
