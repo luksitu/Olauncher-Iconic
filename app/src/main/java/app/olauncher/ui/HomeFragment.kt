@@ -205,15 +205,15 @@ class HomeFragment : Fragment(), View.OnClickListener, View.OnLongClickListener 
     private fun initSwipeTouchListener() {
         val context = requireContext()
         binding.mainLayout.setOnTouchListener(getSwipeGestureListener(context))
-        binding.homeAppIcon1.setOnTouchListener(getViewSwipeTouchListener(context, binding.homeAppIcon1))
-        binding.homeAppIcon2.setOnTouchListener(getViewSwipeTouchListener(context, binding.homeAppIcon2))
-        binding.homeAppIcon3.setOnTouchListener(getViewSwipeTouchListener(context, binding.homeAppIcon3))
-        binding.homeAppIcon4.setOnTouchListener(getViewSwipeTouchListener(context, binding.homeAppIcon4))
-        binding.homeAppIcon5.setOnTouchListener(getViewSwipeTouchListener(context, binding.homeAppIcon5))
-        binding.homeAppIcon6.setOnTouchListener(getViewSwipeTouchListener(context, binding.homeAppIcon6))
-        binding.homeAppIcon7.setOnTouchListener(getViewSwipeTouchListener(context, binding.homeAppIcon7))
-        binding.homeAppIcon8.setOnTouchListener(getViewSwipeTouchListener(context, binding.homeAppIcon8))
-        binding.homeAppIcon9.setOnTouchListener(getViewSwipeTouchListener(context, binding.homeAppIcon9))
+        binding.homeAppIcon1?.setOnTouchListener(getViewSwipeTouchListener(context, binding.homeAppIcon1!!))
+        binding.homeAppIcon2?.setOnTouchListener(getViewSwipeTouchListener(context, binding.homeAppIcon2!!))
+        binding.homeAppIcon3?.setOnTouchListener(getViewSwipeTouchListener(context, binding.homeAppIcon3!!))
+        binding.homeAppIcon4?.setOnTouchListener(getViewSwipeTouchListener(context, binding.homeAppIcon4!!))
+        binding.homeAppIcon5?.setOnTouchListener(getViewSwipeTouchListener(context, binding.homeAppIcon5!!))
+        binding.homeAppIcon6?.setOnTouchListener(getViewSwipeTouchListener(context, binding.homeAppIcon6!!))
+        binding.homeAppIcon7?.setOnTouchListener(getViewSwipeTouchListener(context, binding.homeAppIcon7!!))
+        binding.homeAppIcon8?.setOnTouchListener(getViewSwipeTouchListener(context, binding.homeAppIcon8!!))
+        binding.homeAppIcon9?.setOnTouchListener(getViewSwipeTouchListener(context, binding.homeAppIcon9!!))
     }
 
     private fun initClickListeners() {
@@ -321,11 +321,13 @@ class HomeFragment : Fragment(), View.OnClickListener, View.OnLongClickListener 
         )
         
         icons.forEach { icon ->
-            val params = icon.layoutParams
-            params.width = iconSize
-            params.height = iconSize
-            icon.layoutParams = params
-            icon.setPadding(iconPadding, iconPadding, iconPadding, iconPadding)
+            icon?.let {
+                val params = it.layoutParams
+                params.width = iconSize
+                params.height = iconSize
+                it.layoutParams = params
+                it.setPadding(iconPadding, iconPadding, iconPadding, iconPadding)
+            }
         }
     }
 
@@ -342,66 +344,84 @@ class HomeFragment : Fragment(), View.OnClickListener, View.OnLongClickListener 
         val homeAppsNum = prefs.homeAppsNum
         if (homeAppsNum == 0) return
 
-        binding.homeAppIcon1.visibility = View.VISIBLE
-        if (!setHomeAppIcon(binding.homeAppIcon1, prefs.appPackage1, prefs.appUser1)) {
-            prefs.appName1 = ""
-            prefs.appPackage1 = ""
+        binding.homeAppIcon1?.visibility = View.VISIBLE
+        binding.homeAppIcon1?.let {
+            if (!setHomeAppIcon(it, prefs.appPackage1, prefs.appUser1)) {
+                prefs.appName1 = ""
+                prefs.appPackage1 = ""
+            }
         }
         if (homeAppsNum == 1) return
 
-        binding.homeAppIcon2.visibility = View.VISIBLE
-        if (!setHomeAppIcon(binding.homeAppIcon2, prefs.appPackage2, prefs.appUser2)) {
-            prefs.appName2 = ""
-            prefs.appPackage2 = ""
+        binding.homeAppIcon2?.visibility = View.VISIBLE
+        binding.homeAppIcon2?.let {
+            if (!setHomeAppIcon(it, prefs.appPackage2, prefs.appUser2)) {
+                prefs.appName2 = ""
+                prefs.appPackage2 = ""
+            }
         }
         if (homeAppsNum == 2) return
 
-        binding.homeAppIcon3.visibility = View.VISIBLE
-        if (!setHomeAppIcon(binding.homeAppIcon3, prefs.appPackage3, prefs.appUser3)) {
-            prefs.appName3 = ""
-            prefs.appPackage3 = ""
+        binding.homeAppIcon3?.visibility = View.VISIBLE
+        binding.homeAppIcon3?.let {
+            if (!setHomeAppIcon(it, prefs.appPackage3, prefs.appUser3)) {
+                prefs.appName3 = ""
+                prefs.appPackage3 = ""
+            }
         }
         if (homeAppsNum == 3) return
 
-        binding.homeAppIcon4.visibility = View.VISIBLE
-        if (!setHomeAppIcon(binding.homeAppIcon4, prefs.appPackage4, prefs.appUser4)) {
-            prefs.appName4 = ""
-            prefs.appPackage4 = ""
+        binding.homeAppIcon4?.visibility = View.VISIBLE
+        binding.homeAppIcon4?.let {
+            if (!setHomeAppIcon(it, prefs.appPackage4, prefs.appUser4)) {
+                prefs.appName4 = ""
+                prefs.appPackage4 = ""
+            }
         }
         if (homeAppsNum == 4) return
 
-        binding.homeAppIcon5.visibility = View.VISIBLE
-        if (!setHomeAppIcon(binding.homeAppIcon5, prefs.appPackage5, prefs.appUser5)) {
-            prefs.appName5 = ""
-            prefs.appPackage5 = ""
+        binding.homeAppIcon5?.visibility = View.VISIBLE
+        binding.homeAppIcon5?.let {
+            if (!setHomeAppIcon(it, prefs.appPackage5, prefs.appUser5)) {
+                prefs.appName5 = ""
+                prefs.appPackage5 = ""
+            }
         }
         if (homeAppsNum == 5) return
 
-        binding.homeAppIcon6.visibility = View.VISIBLE
-        if (!setHomeAppIcon(binding.homeAppIcon6, prefs.appPackage6, prefs.appUser6)) {
-            prefs.appName6 = ""
-            prefs.appPackage6 = ""
+        binding.homeAppIcon6?.visibility = View.VISIBLE
+        binding.homeAppIcon6?.let {
+            if (!setHomeAppIcon(it, prefs.appPackage6, prefs.appUser6)) {
+                prefs.appName6 = ""
+                prefs.appPackage6 = ""
+            }
         }
         if (homeAppsNum == 6) return
 
-        binding.homeAppIcon7.visibility = View.VISIBLE
-        if (!setHomeAppIcon(binding.homeAppIcon7, prefs.appPackage7, prefs.appUser7)) {
-            prefs.appName7 = ""
-            prefs.appPackage7 = ""
+        binding.homeAppIcon7?.visibility = View.VISIBLE
+        binding.homeAppIcon7?.let {
+            if (!setHomeAppIcon(it, prefs.appPackage7, prefs.appUser7)) {
+                prefs.appName7 = ""
+                prefs.appPackage7 = ""
+            }
         }
         if (homeAppsNum == 7) return
 
-        binding.homeAppIcon8.visibility = View.VISIBLE
-        if (!setHomeAppIcon(binding.homeAppIcon8, prefs.appPackage8, prefs.appUser8)) {
-            prefs.appName8 = ""
-            prefs.appPackage8 = ""
+        binding.homeAppIcon8?.visibility = View.VISIBLE
+        binding.homeAppIcon8?.let {
+            if (!setHomeAppIcon(it, prefs.appPackage8, prefs.appUser8)) {
+                prefs.appName8 = ""
+                prefs.appPackage8 = ""
+            }
         }
         if (homeAppsNum == 8) return
 
-        binding.homeAppIcon9.visibility = View.VISIBLE
-        if (!setHomeAppIcon(binding.homeAppIcon9, prefs.appPackage9, prefs.appUser9)) {
-            prefs.appName9 = ""
-            prefs.appPackage9 = ""
+        binding.homeAppIcon9?.visibility = View.VISIBLE
+        binding.homeAppIcon9?.let {
+            if (!setHomeAppIcon(it, prefs.appPackage9, prefs.appUser9)) {
+                prefs.appName9 = ""
+                prefs.appPackage9 = ""
+            }
         }
     }
 
@@ -416,15 +436,15 @@ class HomeFragment : Fragment(), View.OnClickListener, View.OnLongClickListener 
     }
 
     private fun hideHomeApps() {
-        binding.homeAppIcon1.visibility = View.GONE
-        binding.homeAppIcon2.visibility = View.GONE
-        binding.homeAppIcon3.visibility = View.GONE
-        binding.homeAppIcon4.visibility = View.GONE
-        binding.homeAppIcon5.visibility = View.GONE
-        binding.homeAppIcon6.visibility = View.GONE
-        binding.homeAppIcon7.visibility = View.GONE
-        binding.homeAppIcon8.visibility = View.GONE
-        binding.homeAppIcon9.visibility = View.GONE
+        binding.homeAppIcon1?.visibility = View.GONE
+        binding.homeAppIcon2?.visibility = View.GONE
+        binding.homeAppIcon3?.visibility = View.GONE
+        binding.homeAppIcon4?.visibility = View.GONE
+        binding.homeAppIcon5?.visibility = View.GONE
+        binding.homeAppIcon6?.visibility = View.GONE
+        binding.homeAppIcon7?.visibility = View.GONE
+        binding.homeAppIcon8?.visibility = View.GONE
+        binding.homeAppIcon9?.visibility = View.GONE
     }
 
     private fun homeAppClicked(location: Int) {

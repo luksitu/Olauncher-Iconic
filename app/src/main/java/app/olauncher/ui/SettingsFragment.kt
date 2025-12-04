@@ -90,7 +90,7 @@ class SettingsFragment : Fragment(), View.OnClickListener, View.OnLongClickListe
         binding.dateTimeSelectLayout.visibility = View.GONE
         binding.appThemeSelectLayout.visibility = View.GONE
         binding.swipeDownSelectLayout.visibility = View.GONE
-        binding.iconSizesLayout.visibility = View.GONE
+        binding.iconSizesLayout?.visibility = View.GONE
         if (view.id != R.id.alignmentBottom)
             binding.alignmentSelectLayout.visibility = View.GONE
 
@@ -119,7 +119,7 @@ class SettingsFragment : Fragment(), View.OnClickListener, View.OnLongClickListe
             R.id.themeLight -> updateTheme(AppCompatDelegate.MODE_NIGHT_NO)
             R.id.themeDark -> updateTheme(AppCompatDelegate.MODE_NIGHT_YES)
             R.id.themeSystem -> updateTheme(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
-            R.id.iconSizeValue -> binding.iconSizesLayout.visibility = View.VISIBLE
+            R.id.iconSizeValue -> binding.iconSizesLayout?.visibility = View.VISIBLE
             R.id.actionAccessibility -> openAccessibilityService()
             R.id.closeAccessibility -> toggleAccessibilityVisibility(false)
             R.id.notWorking -> requireContext().openUrl(Constants.URL_DOUBLE_TAP)
@@ -218,7 +218,7 @@ class SettingsFragment : Fragment(), View.OnClickListener, View.OnLongClickListe
         binding.themeLight.setOnClickListener(this)
         binding.themeDark.setOnClickListener(this)
         binding.themeSystem.setOnClickListener(this)
-        binding.iconSizeValue.setOnClickListener(this)
+        binding.iconSizeValue?.setOnClickListener(this)
         binding.actionAccessibility.setOnClickListener(this)
         binding.closeAccessibility.setOnClickListener(this)
         binding.notWorking.setOnClickListener(this)
@@ -239,11 +239,11 @@ class SettingsFragment : Fragment(), View.OnClickListener, View.OnLongClickListe
         binding.maxApps6.setOnClickListener(this)
         binding.maxApps7.setOnClickListener(this)
         binding.maxApps8.setOnClickListener(this)
-        binding.maxApps9.setOnClickListener(this)
+        binding.maxApps9?.setOnClickListener(this)
 
-        binding.iconSmall.setOnClickListener(this)
-        binding.iconMedium.setOnClickListener(this)
-        binding.iconLarge.setOnClickListener(this)
+        binding.iconSmall?.setOnClickListener(this)
+        binding.iconMedium?.setOnClickListener(this)
+        binding.iconLarge?.setOnClickListener(this)
 
         binding.dailyWallpaper.setOnLongClickListener(this)
         binding.alignment.setOnLongClickListener(this)
@@ -455,7 +455,7 @@ class SettingsFragment : Fragment(), View.OnClickListener, View.OnLongClickListe
         prefs.iconSize = size
         viewModel.refreshHome(false)
         populateIconSize()
-        binding.iconSizesLayout.visibility = View.GONE
+        binding.iconSizesLayout?.visibility = View.GONE
     }
 
     private fun toggleKeyboardText() {
@@ -505,7 +505,7 @@ class SettingsFragment : Fragment(), View.OnClickListener, View.OnLongClickListe
     }
 
     private fun populateIconSize() {
-        binding.iconSizeValue.text = when (prefs.iconSize) {
+        binding.iconSizeValue?.text = when (prefs.iconSize) {
             Constants.IconSize.SMALL -> getString(R.string.small)
             Constants.IconSize.LARGE -> getString(R.string.large)
             else -> getString(R.string.medium)
