@@ -14,7 +14,7 @@ AF stands for Ad-Free :D
     height="80">](https://f-droid.org/packages/app.olauncher)
 [<img src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png"
     alt="Get it on Play Store"
-    height="80">](https://play.google.com/store/apps/details?id=app.olauncher)
+    height="80">](https://play.google.com/store/apps/details?id=app.olauncher)  
 
 To maintain the simplicity of the launcher, a few niche features are available but hidden.
 

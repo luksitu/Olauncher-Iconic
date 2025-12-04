@@ -56,6 +56,12 @@ object Constants {
         const val SEVEN = 1.3f
     }
 
+    object IconSize {
+        const val SMALL = 0
+        const val MEDIUM = 1
+        const val LARGE = 2
+    }
+
     object CharacterIndicator {
         const val SHOW = 102
         const val HIDE = 101
@@ -86,6 +92,7 @@ object Constants {
     const val FLAG_SET_HOME_APP_6 = 6
     const val FLAG_SET_HOME_APP_7 = 7
     const val FLAG_SET_HOME_APP_8 = 8
+    const val FLAG_SET_HOME_APP_9 = 9
 
     const val FLAG_SET_SWIPE_LEFT_APP = 11
     const val FLAG_SET_SWIPE_RIGHT_APP = 12

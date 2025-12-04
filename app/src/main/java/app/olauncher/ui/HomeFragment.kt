@@ -9,10 +9,13 @@ import android.os.Build
 import android.os.Bundle
 import android.view.Gravity
 import android.view.LayoutInflater
+import android.content.pm.LauncherApps
+import android.graphics.drawable.Drawable
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowInsets
 import android.widget.FrameLayout
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
@@ -130,14 +133,15 @@ class HomeFragment : Fragment(), View.OnClickListener, View.OnLongClickListener 
 
     override fun onLongClick(view: View): Boolean {
         when (view.id) {
-            R.id.homeApp1 -> showAppList(Constants.FLAG_SET_HOME_APP_1, prefs.appName1.isNotEmpty(), true)
-            R.id.homeApp2 -> showAppList(Constants.FLAG_SET_HOME_APP_2, prefs.appName2.isNotEmpty(), true)
-            R.id.homeApp3 -> showAppList(Constants.FLAG_SET_HOME_APP_3, prefs.appName3.isNotEmpty(), true)
-            R.id.homeApp4 -> showAppList(Constants.FLAG_SET_HOME_APP_4, prefs.appName4.isNotEmpty(), true)
-            R.id.homeApp5 -> showAppList(Constants.FLAG_SET_HOME_APP_5, prefs.appName5.isNotEmpty(), true)
-            R.id.homeApp6 -> showAppList(Constants.FLAG_SET_HOME_APP_6, prefs.appName6.isNotEmpty(), true)
-            R.id.homeApp7 -> showAppList(Constants.FLAG_SET_HOME_APP_7, prefs.appName7.isNotEmpty(), true)
-            R.id.homeApp8 -> showAppList(Constants.FLAG_SET_HOME_APP_8, prefs.appName8.isNotEmpty(), true)
+            R.id.homeAppIcon1 -> showAppList(Constants.FLAG_SET_HOME_APP_1, prefs.appName1.isNotEmpty(), true)
+            R.id.homeAppIcon2 -> showAppList(Constants.FLAG_SET_HOME_APP_2, prefs.appName2.isNotEmpty(), true)
+            R.id.homeAppIcon3 -> showAppList(Constants.FLAG_SET_HOME_APP_3, prefs.appName3.isNotEmpty(), true)
+            R.id.homeAppIcon4 -> showAppList(Constants.FLAG_SET_HOME_APP_4, prefs.appName4.isNotEmpty(), true)
+            R.id.homeAppIcon5 -> showAppList(Constants.FLAG_SET_HOME_APP_5, prefs.appName5.isNotEmpty(), true)
+            R.id.homeAppIcon6 -> showAppList(Constants.FLAG_SET_HOME_APP_6, prefs.appName6.isNotEmpty(), true)
+            R.id.homeAppIcon7 -> showAppList(Constants.FLAG_SET_HOME_APP_7, prefs.appName7.isNotEmpty(), true)
+            R.id.homeAppIcon8 -> showAppList(Constants.FLAG_SET_HOME_APP_8, prefs.appName8.isNotEmpty(), true)
+            R.id.homeAppIcon9 -> showAppList(Constants.FLAG_SET_HOME_APP_9, prefs.appName9.isNotEmpty(), true)
             R.id.clock -> {
                 showAppList(Constants.FLAG_SET_CLOCK_APP)
                 prefs.clockAppPackage = ""
@@ -201,14 +205,15 @@ class HomeFragment : Fragment(), View.OnClickListener, View.OnLongClickListener 
     private fun initSwipeTouchListener() {
         val context = requireContext()
         binding.mainLayout.setOnTouchListener(getSwipeGestureListener(context))
-        binding.homeApp1.setOnTouchListener(getViewSwipeTouchListener(context, binding.homeApp1))
-        binding.homeApp2.setOnTouchListener(getViewSwipeTouchListener(context, binding.homeApp2))
-        binding.homeApp3.setOnTouchListener(getViewSwipeTouchListener(context, binding.homeApp3))
-        binding.homeApp4.setOnTouchListener(getViewSwipeTouchListener(context, binding.homeApp4))
-        binding.homeApp5.setOnTouchListener(getViewSwipeTouchListener(context, binding.homeApp5))
-        binding.homeApp6.setOnTouchListener(getViewSwipeTouchListener(context, binding.homeApp6))
-        binding.homeApp7.setOnTouchListener(getViewSwipeTouchListener(context, binding.homeApp7))
-        binding.homeApp8.setOnTouchListener(getViewSwipeTouchListener(context, binding.homeApp8))
+        binding.homeAppIcon1.setOnTouchListener(getViewSwipeTouchListener(context, binding.homeAppIcon1))
+        binding.homeAppIcon2.setOnTouchListener(getViewSwipeTouchListener(context, binding.homeAppIcon2))
+        binding.homeAppIcon3.setOnTouchListener(getViewSwipeTouchListener(context, binding.homeAppIcon3))
+        binding.homeAppIcon4.setOnTouchListener(getViewSwipeTouchListener(context, binding.homeAppIcon4))
+        binding.homeAppIcon5.setOnTouchListener(getViewSwipeTouchListener(context, binding.homeAppIcon5))
+        binding.homeAppIcon6.setOnTouchListener(getViewSwipeTouchListener(context, binding.homeAppIcon6))
+        binding.homeAppIcon7.setOnTouchListener(getViewSwipeTouchListener(context, binding.homeAppIcon7))
+        binding.homeAppIcon8.setOnTouchListener(getViewSwipeTouchListener(context, binding.homeAppIcon8))
+        binding.homeAppIcon9.setOnTouchListener(getViewSwipeTouchListener(context, binding.homeAppIcon9))
     }
 
     private fun initClickListeners() {
@@ -223,17 +228,9 @@ class HomeFragment : Fragment(), View.OnClickListener, View.OnLongClickListener 
     }
 
     private fun setHomeAlignment(horizontalGravity: Int = prefs.homeAlignment) {
-        val verticalGravity = if (prefs.homeBottomAlignment) Gravity.BOTTOM else Gravity.CENTER_VERTICAL
-        binding.homeAppsLayout.gravity = horizontalGravity or verticalGravity
+        // Clock/date alignment still respects the horizontalGravity setting
         binding.dateTimeLayout.gravity = horizontalGravity
-        binding.homeApp1.gravity = horizontalGravity
-        binding.homeApp2.gravity = horizontalGravity
-        binding.homeApp3.gravity = horizontalGravity
-        binding.homeApp4.gravity = horizontalGravity
-        binding.homeApp5.gravity = horizontalGravity
-        binding.homeApp6.gravity = horizontalGravity
-        binding.homeApp7.gravity = horizontalGravity
-        binding.homeApp8.gravity = horizontalGravity
+        // Grid is always centered via ConstraintLayout
     }
 
     private fun populateDateTime() {
@@ -281,6 +278,57 @@ class HomeFragment : Fragment(), View.OnClickListener, View.OnLongClickListener 
         binding.tvScreenTime.setPadding(10.dpToPx())
     }
 
+    private fun getAppIcon(packageName: String, userString: String): Drawable? {
+        if (packageName.isEmpty()) return null
+        
+        try {
+            val launcher = requireContext().getSystemService(Context.LAUNCHER_APPS_SERVICE) as LauncherApps
+            val userHandle = getUserHandleFromString(requireContext(), userString)
+            val activities = launcher.getActivityList(packageName, userHandle)
+            
+            if (activities.isNotEmpty()) {
+                return activities[0].getBadgedIcon(0)
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+        return null
+    }
+
+    private fun getPlaceholderIcon(): Drawable? {
+        return requireContext().getDrawable(R.drawable.ic_placeholder_app)
+    }
+
+    private fun updateIconSizes() {
+        val iconSizeDimen = when (prefs.iconSize) {
+            Constants.IconSize.SMALL -> R.dimen.icon_size_small
+            Constants.IconSize.LARGE -> R.dimen.icon_size_large
+            else -> R.dimen.icon_size_medium
+        }
+        val iconPaddingDimen = when (prefs.iconSize) {
+            Constants.IconSize.SMALL -> R.dimen.icon_padding_small
+            Constants.IconSize.LARGE -> R.dimen.icon_padding_large
+            else -> R.dimen.icon_padding_medium
+        }
+        
+        val iconSize = resources.getDimensionPixelSize(iconSizeDimen)
+        val iconPadding = resources.getDimensionPixelSize(iconPaddingDimen)
+        
+        val icons = listOf(
+            binding.homeAppIcon1, binding.homeAppIcon2, binding.homeAppIcon3,
+            binding.homeAppIcon4, binding.homeAppIcon5, binding.homeAppIcon6,
+            binding.homeAppIcon7, binding.homeAppIcon8, binding.homeAppIcon9
+        )
+        
+        icons.forEach { icon ->
+            val params = icon.layoutParams
+            params.width = iconSize
+            params.height = iconSize
+            icon.layoutParams = params
+            icon.setPadding(iconPadding, iconPadding, iconPadding, iconPadding)
+        }
+    }
+
     private fun populateHomeScreen(appCountUpdated: Boolean) {
         if (appCountUpdated) hideHomeApps()
         populateDateTime()
@@ -288,83 +336,95 @@ class HomeFragment : Fragment(), View.OnClickListener, View.OnLongClickListener 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q)
             populateScreenTime()
 
+        // Update icon sizes based on preference
+        updateIconSizes()
+
         val homeAppsNum = prefs.homeAppsNum
         if (homeAppsNum == 0) return
 
-        binding.homeApp1.visibility = View.VISIBLE
-        if (!setHomeAppText(binding.homeApp1, prefs.appName1, prefs.appPackage1, prefs.appUser1)) {
+        binding.homeAppIcon1.visibility = View.VISIBLE
+        if (!setHomeAppIcon(binding.homeAppIcon1, prefs.appPackage1, prefs.appUser1)) {
             prefs.appName1 = ""
             prefs.appPackage1 = ""
         }
         if (homeAppsNum == 1) return
 
-        binding.homeApp2.visibility = View.VISIBLE
-        if (!setHomeAppText(binding.homeApp2, prefs.appName2, prefs.appPackage2, prefs.appUser2)) {
+        binding.homeAppIcon2.visibility = View.VISIBLE
+        if (!setHomeAppIcon(binding.homeAppIcon2, prefs.appPackage2, prefs.appUser2)) {
             prefs.appName2 = ""
             prefs.appPackage2 = ""
         }
         if (homeAppsNum == 2) return
 
-        binding.homeApp3.visibility = View.VISIBLE
-        if (!setHomeAppText(binding.homeApp3, prefs.appName3, prefs.appPackage3, prefs.appUser3)) {
+        binding.homeAppIcon3.visibility = View.VISIBLE
+        if (!setHomeAppIcon(binding.homeAppIcon3, prefs.appPackage3, prefs.appUser3)) {
             prefs.appName3 = ""
             prefs.appPackage3 = ""
         }
         if (homeAppsNum == 3) return
 
-        binding.homeApp4.visibility = View.VISIBLE
-        if (!setHomeAppText(binding.homeApp4, prefs.appName4, prefs.appPackage4, prefs.appUser4)) {
+        binding.homeAppIcon4.visibility = View.VISIBLE
+        if (!setHomeAppIcon(binding.homeAppIcon4, prefs.appPackage4, prefs.appUser4)) {
             prefs.appName4 = ""
             prefs.appPackage4 = ""
         }
         if (homeAppsNum == 4) return
 
-        binding.homeApp5.visibility = View.VISIBLE
-        if (!setHomeAppText(binding.homeApp5, prefs.appName5, prefs.appPackage5, prefs.appUser5)) {
+        binding.homeAppIcon5.visibility = View.VISIBLE
+        if (!setHomeAppIcon(binding.homeAppIcon5, prefs.appPackage5, prefs.appUser5)) {
             prefs.appName5 = ""
             prefs.appPackage5 = ""
         }
         if (homeAppsNum == 5) return
 
-        binding.homeApp6.visibility = View.VISIBLE
-        if (!setHomeAppText(binding.homeApp6, prefs.appName6, prefs.appPackage6, prefs.appUser6)) {
+        binding.homeAppIcon6.visibility = View.VISIBLE
+        if (!setHomeAppIcon(binding.homeAppIcon6, prefs.appPackage6, prefs.appUser6)) {
             prefs.appName6 = ""
             prefs.appPackage6 = ""
         }
         if (homeAppsNum == 6) return
 
-        binding.homeApp7.visibility = View.VISIBLE
-        if (!setHomeAppText(binding.homeApp7, prefs.appName7, prefs.appPackage7, prefs.appUser7)) {
+        binding.homeAppIcon7.visibility = View.VISIBLE
+        if (!setHomeAppIcon(binding.homeAppIcon7, prefs.appPackage7, prefs.appUser7)) {
             prefs.appName7 = ""
             prefs.appPackage7 = ""
         }
         if (homeAppsNum == 7) return
 
-        binding.homeApp8.visibility = View.VISIBLE
-        if (!setHomeAppText(binding.homeApp8, prefs.appName8, prefs.appPackage8, prefs.appUser8)) {
+        binding.homeAppIcon8.visibility = View.VISIBLE
+        if (!setHomeAppIcon(binding.homeAppIcon8, prefs.appPackage8, prefs.appUser8)) {
             prefs.appName8 = ""
             prefs.appPackage8 = ""
         }
+        if (homeAppsNum == 8) return
+
+        binding.homeAppIcon9.visibility = View.VISIBLE
+        if (!setHomeAppIcon(binding.homeAppIcon9, prefs.appPackage9, prefs.appUser9)) {
+            prefs.appName9 = ""
+            prefs.appPackage9 = ""
+        }
     }
 
-    private fun setHomeAppText(textView: TextView, appName: String, packageName: String, userString: String): Boolean {
+    private fun setHomeAppIcon(imageView: ImageView, packageName: String, userString: String): Boolean {
         if (isPackageInstalled(requireContext(), packageName, userString)) {
-            textView.text = appName
+            val icon = getAppIcon(packageName, userString)
+            imageView.setImageDrawable(icon ?: getPlaceholderIcon())
             return true
         }
-        textView.text = ""
+        imageView.setImageDrawable(getPlaceholderIcon())
         return false
     }
 
     private fun hideHomeApps() {
-        binding.homeApp1.visibility = View.GONE
-        binding.homeApp2.visibility = View.GONE
-        binding.homeApp3.visibility = View.GONE
-        binding.homeApp4.visibility = View.GONE
-        binding.homeApp5.visibility = View.GONE
-        binding.homeApp6.visibility = View.GONE
-        binding.homeApp7.visibility = View.GONE
-        binding.homeApp8.visibility = View.GONE
+        binding.homeAppIcon1.visibility = View.GONE
+        binding.homeAppIcon2.visibility = View.GONE
+        binding.homeAppIcon3.visibility = View.GONE
+        binding.homeAppIcon4.visibility = View.GONE
+        binding.homeAppIcon5.visibility = View.GONE
+        binding.homeAppIcon6.visibility = View.GONE
+        binding.homeAppIcon7.visibility = View.GONE
+        binding.homeAppIcon8.visibility = View.GONE
+        binding.homeAppIcon9.visibility = View.GONE
     }
 
     private fun homeAppClicked(location: Int) {

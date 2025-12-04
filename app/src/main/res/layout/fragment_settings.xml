@@ -249,6 +249,16 @@
                             android:paddingVertical="8dp"
                             android:text="@string/_8" />
 
+                        <TextView
+                            android:id="@+id/maxApps9"
+                            style="@style/TextSmall"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:paddingVertical="8dp"
+                            android:text="@string/_9" />
+
                     </LinearLayout>
 
                 </FrameLayout>
@@ -666,11 +676,11 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
                         android:paddingVertical="8dp"
-                        android:text="@string/text_size"
+                        android:text="@string/icon_size"
                         android:textColor="?attr/primaryColor" />
 
                     <TextView
-                        android:id="@+id/textSizeValue"
+                        android:id="@+id/iconSizeValue"
                         style="@style/TextSmallBold"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -679,11 +689,11 @@
                         android:paddingVertical="8dp"
                         android:paddingStart="24dp"
                         android:paddingEnd="8dp"
-                        tools:text="@string/_8" />
+                        tools:text="@string/medium" />
 
-                    <!-- Text sizes layout-->
+                    <!-- Icon sizes layout-->
                     <LinearLayout
-                        android:id="@+id/textSizesLayout"
+                        android:id="@+id/iconSizesLayout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:animateLayoutChanges="true"
@@ -697,74 +707,34 @@
                         tools:visibility="gone">
 
                         <TextView
-                            android:id="@+id/textSize1"
+                            android:id="@+id/iconSmall"
                             style="@style/TextSmall"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:gravity="center"
                             android:paddingVertical="8dp"
-                            android:text="@string/_1" />
+                            android:text="@string/small" />
 
                         <TextView
-                            android:id="@+id/textSize2"
+                            android:id="@+id/iconMedium"
                             style="@style/TextSmall"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:gravity="center"
                             android:paddingVertical="8dp"
-                            android:text="@string/_2" />
+                            android:text="@string/medium" />
 
                         <TextView
-                            android:id="@+id/textSize3"
+                            android:id="@+id/iconLarge"
                             style="@style/TextSmall"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:gravity="center"
                             android:paddingVertical="8dp"
-                            android:text="@string/_3" />
-
-                        <TextView
-                            android:id="@+id/textSize4"
-                            style="@style/TextSmall"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:gravity="center"
-                            android:paddingVertical="8dp"
-                            android:text="@string/_4" />
-
-                        <TextView
-                            android:id="@+id/textSize5"
-                            style="@style/TextSmall"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:gravity="center"
-                            android:paddingVertical="8dp"
-                            android:text="@string/_5" />
-
-                        <TextView
-                            android:id="@+id/textSize6"
-                            style="@style/TextSmall"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:gravity="center"
-                            android:paddingVertical="8dp"
-                            android:text="@string/_6" />
-
-                        <TextView
-                            android:id="@+id/textSize7"
-                            style="@style/TextSmall"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:gravity="center"
-                            android:paddingVertical="8dp"
-                            android:text="@string/_7" />
+                            android:text="@string/large" />
 
                     </LinearLayout>
 
