@@ -15,4 +15,8 @@
     <dimen name="icon_padding_medium">12dp</dimen>
     <dimen name="icon_padding_large">16dp</dimen>
     <dimen name="icon_padding_xlarge">20dp</dimen>
+    
+    <!-- App drawer icon -->
+    <dimen name="drawer_icon_size">40dp</dimen>
+    <dimen name="drawer_icon_margin_end">12dp</dimen>
 </resources>

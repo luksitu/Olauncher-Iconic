@@ -1,6 +1,8 @@
 package app.olauncher.ui
 
 import android.content.Context
+import android.content.pm.LauncherApps
+import android.graphics.drawable.Drawable
 import android.os.UserHandle
 import android.text.Editable
 import android.text.TextWatcher
@@ -160,10 +162,20 @@ class AppDrawerAdapter(
                 appTitle.visibility = View.VISIBLE
                 appTitle.text = appModel.appLabel + if (appModel.isNew == true) " ✦" else ""
                 appTitle.gravity = appLabelGravity
+                appItemLayout.gravity = appLabelGravity or android.view.Gravity.CENTER_VERTICAL
                 otherProfileIndicator.isVisible = appModel.user != myUserHandle
 
-                appTitle.setOnClickListener { clickListener(appModel, it) }
-                appTitle.setOnLongClickListener {
+                // Load and display app icon
+                if (appModel.appPackage.isNotEmpty()) {
+                    val icon = loadAppIcon(root.context, appModel.appPackage, appModel.user)
+                    appIcon.setImageDrawable(icon)
+                    appIcon.visibility = View.VISIBLE
+                } else {
+                    appIcon.visibility = View.GONE
+                }
+
+                appItemLayout.setOnClickListener { clickListener(appModel, appIcon) }
+                appItemLayout.setOnLongClickListener {
                     if (appModel.appPackage.isNotEmpty()) {
                         appDelete.alpha = if (root.context.isSystemApp(appModel.appPackage)) 0.5f else 1.0f
                         appHide.text = if (flag == Constants.FLAG_HIDDEN_APPS)
@@ -261,6 +273,19 @@ class AppDrawerAdapter(
             return packageManager.getApplicationLabel(
                 packageManager.getApplicationInfo(appPackage, 0)
             ).toString()
+        }
+
+        private fun loadAppIcon(context: Context, packageName: String, userHandle: UserHandle): Drawable? {
+            return try {
+                val launcher = context.getSystemService(Context.LAUNCHER_APPS_SERVICE) as LauncherApps
+                val activities = launcher.getActivityList(packageName, userHandle)
+                if (activities.isNotEmpty()) {
+                    activities[0].getBadgedIcon(0)
+                } else null
+            } catch (e: Exception) {
+                e.printStackTrace()
+                null
+            }
         }
     }
 }

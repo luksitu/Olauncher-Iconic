@@ -6,15 +6,36 @@
     android:layout_height="wrap_content"
     android:animateLayoutChanges="true">
 
-    <TextView
-        android:id="@+id/appTitle"
-        style="@style/TextLarge"
+    <LinearLayout
+        android:id="@+id/appItemLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:maxLines="1"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
         android:paddingHorizontal="20dp"
         android:paddingVertical="@dimen/app_padding_vertical"
-        android:text="@string/app" />
+        android:clickable="true"
+        android:focusable="true"
+        android:background="?attr/selectableItemBackground">
+
+        <ImageView
+            android:id="@+id/appIcon"
+            android:layout_width="@dimen/drawer_icon_size"
+            android:layout_height="@dimen/drawer_icon_size"
+            android:layout_marginEnd="@dimen/drawer_icon_margin_end"
+            android:scaleType="fitCenter"
+            tools:src="@drawable/ic_placeholder_app" />
+
+        <TextView
+            android:id="@+id/appTitle"
+            style="@style/TextLarge"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:maxLines="1"
+            android:text="@string/app" />
+
+    </LinearLayout>
 
     <ImageView
         android:id="@+id/otherProfileIndicator"

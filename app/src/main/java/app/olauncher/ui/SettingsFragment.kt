@@ -75,6 +75,7 @@ class SettingsFragment : Fragment(), View.OnClickListener, View.OnLongClickListe
         populateWallpaperText()
         populateAppThemeText()
         populateIconSize()
+        populateTextSize()
         populateAlignment()
         populateStatusBar()
         populateDateTime()
@@ -91,6 +92,7 @@ class SettingsFragment : Fragment(), View.OnClickListener, View.OnLongClickListe
         binding.appThemeSelectLayout.visibility = View.GONE
         binding.swipeDownSelectLayout.visibility = View.GONE
         binding.iconSizesLayout?.visibility = View.GONE
+        binding.textSizesLayout?.visibility = View.GONE
         if (view.id != R.id.alignmentBottom)
             binding.alignmentSelectLayout.visibility = View.GONE
 
@@ -120,6 +122,7 @@ class SettingsFragment : Fragment(), View.OnClickListener, View.OnLongClickListe
             R.id.themeDark -> updateTheme(AppCompatDelegate.MODE_NIGHT_YES)
             R.id.themeSystem -> updateTheme(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
             R.id.iconSizeValue -> binding.iconSizesLayout?.visibility = View.VISIBLE
+            R.id.textSizeValue -> binding.textSizesLayout?.visibility = View.VISIBLE
             R.id.actionAccessibility -> openAccessibilityService()
             R.id.closeAccessibility -> toggleAccessibilityVisibility(false)
             R.id.notWorking -> requireContext().openUrl(Constants.URL_DOUBLE_TAP)
@@ -141,6 +144,14 @@ class SettingsFragment : Fragment(), View.OnClickListener, View.OnLongClickListe
             R.id.iconMedium -> updateIconSize(Constants.IconSize.MEDIUM)
             R.id.iconLarge -> updateIconSize(Constants.IconSize.LARGE)
             R.id.iconXLarge -> updateIconSize(Constants.IconSize.XLARGE)
+
+            R.id.textSize1 -> updateTextSizeScale(Constants.TextSize.ONE)
+            R.id.textSize2 -> updateTextSizeScale(Constants.TextSize.TWO)
+            R.id.textSize3 -> updateTextSizeScale(Constants.TextSize.THREE)
+            R.id.textSize4 -> updateTextSizeScale(Constants.TextSize.FOUR)
+            R.id.textSize5 -> updateTextSizeScale(Constants.TextSize.FIVE)
+            R.id.textSize6 -> updateTextSizeScale(Constants.TextSize.SIX)
+            R.id.textSize7 -> updateTextSizeScale(Constants.TextSize.SEVEN)
 
             R.id.swipeLeftApp -> showAppListIfEnabled(Constants.FLAG_SET_SWIPE_LEFT_APP)
             R.id.swipeRightApp -> showAppListIfEnabled(Constants.FLAG_SET_SWIPE_RIGHT_APP)
@@ -246,6 +257,15 @@ class SettingsFragment : Fragment(), View.OnClickListener, View.OnLongClickListe
         binding.iconMedium?.setOnClickListener(this)
         binding.iconLarge?.setOnClickListener(this)
         binding.iconXLarge?.setOnClickListener(this)
+
+        binding.textSizeValue?.setOnClickListener(this)
+        binding.textSize1?.setOnClickListener(this)
+        binding.textSize2?.setOnClickListener(this)
+        binding.textSize3?.setOnClickListener(this)
+        binding.textSize4?.setOnClickListener(this)
+        binding.textSize5?.setOnClickListener(this)
+        binding.textSize6?.setOnClickListener(this)
+        binding.textSize7?.setOnClickListener(this)
 
         binding.dailyWallpaper.setOnLongClickListener(this)
         binding.alignment.setOnLongClickListener(this)
@@ -513,6 +533,25 @@ class SettingsFragment : Fragment(), View.OnClickListener, View.OnLongClickListe
             Constants.IconSize.XLARGE -> getString(R.string.xlarge)
             else -> getString(R.string.medium)
         }
+    }
+
+    private fun populateTextSize() {
+        binding.textSizeValue?.text = when (prefs.textSizeScale) {
+            Constants.TextSize.ONE -> 1
+            Constants.TextSize.TWO -> 2
+            Constants.TextSize.THREE -> 3
+            Constants.TextSize.FOUR -> 4
+            Constants.TextSize.FIVE -> 5
+            Constants.TextSize.SIX -> 6
+            Constants.TextSize.SEVEN -> 7
+            else -> "--"
+        }.toString()
+    }
+
+    private fun updateTextSizeScale(sizeScale: Float) {
+        if (prefs.textSizeScale == sizeScale) return
+        prefs.textSizeScale = sizeScale
+        requireActivity().recreate()
     }
 
     private fun populateScreenTimeOnOff() {
