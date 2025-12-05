@@ -1,10 +1,13 @@
 package app.olauncher
 
+import android.app.ActivityOptions
 import android.app.Application
 import android.content.ComponentName
 import android.content.Context
 import android.content.pm.LauncherApps
+import android.os.Build
 import android.os.UserHandle
+import android.view.View
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -50,14 +53,14 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     val checkForMessages = SingleLiveEvent<Unit?>()
     val resetLauncherLiveData = SingleLiveEvent<Unit?>()
 
-    fun selectedApp(appModel: AppModel, flag: Int) {
+    fun selectedApp(appModel: AppModel, flag: Int, sourceView: View? = null) {
         when (flag) {
             Constants.FLAG_LAUNCH_APP -> {
-                launchApp(appModel.appPackage, appModel.activityClassName, appModel.user)
+                launchApp(appModel.appPackage, appModel.activityClassName, appModel.user, sourceView)
             }
 
             Constants.FLAG_HIDDEN_APPS -> {
-                launchApp(appModel.appPackage, appModel.activityClassName, appModel.user)
+                launchApp(appModel.appPackage, appModel.activityClassName, appModel.user, sourceView)
             }
 
             Constants.FLAG_SET_HOME_APP_1 -> {
@@ -178,7 +181,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         updateSwipeApps.postValue(Unit)
     }
 
-    private fun launchApp(packageName: String, activityClassName: String?, userHandle: UserHandle) {
+    private fun launchApp(packageName: String, activityClassName: String?, userHandle: UserHandle, sourceView: View? = null) {
         val launcher = appContext.getSystemService(Context.LAUNCHER_APPS_SERVICE) as LauncherApps
         val activityInfo = launcher.getActivityList(packageName, userHandle)
 
@@ -197,11 +200,27 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
             ComponentName(packageName, activityClassName)
         }
 
+        // Create launch animation options from the source view
+        val options = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && sourceView != null) {
+            try {
+                ActivityOptions.makeScaleUpAnimation(
+                    sourceView,
+                    0, 0,
+                    sourceView.width,
+                    sourceView.height
+                ).toBundle()
+            } catch (e: Exception) {
+                null
+            }
+        } else {
+            null
+        }
+
         try {
-            launcher.startMainActivity(component, userHandle, null, null)
+            launcher.startMainActivity(component, userHandle, options, null)
         } catch (e: SecurityException) {
             try {
-                launcher.startMainActivity(component, android.os.Process.myUserHandle(), null, null)
+                launcher.startMainActivity(component, android.os.Process.myUserHandle(), options, null)
             } catch (e: Exception) {
                 appContext.showToast(appContext.getString(R.string.unable_to_open_app))
             }

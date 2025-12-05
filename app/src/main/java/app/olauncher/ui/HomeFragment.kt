@@ -99,7 +99,7 @@ class HomeFragment : Fragment(), View.OnClickListener, View.OnLongClickListener 
             else -> {
                 try { // Launch app
                     val appLocation = view.tag.toString().toInt()
-                    homeAppClicked(appLocation)
+                    homeAppClicked(appLocation, view as? ImageView)
                 } catch (e: Exception) {
                     e.printStackTrace()
                 }
@@ -449,17 +449,50 @@ class HomeFragment : Fragment(), View.OnClickListener, View.OnLongClickListener 
         binding.homeAppIcon9?.visibility = View.GONE
     }
 
-    private fun homeAppClicked(location: Int) {
-        if (prefs.getAppName(location).isEmpty()) showLongPressToast()
-        else launchApp(
-            prefs.getAppName(location),
-            prefs.getAppPackage(location),
-            prefs.getAppActivityClassName(location),
-            prefs.getAppUser(location)
-        )
+    private fun animateIconPress(imageView: ImageView, onComplete: () -> Unit) {
+        imageView.animate()
+            .scaleX(0.85f)
+            .scaleY(0.85f)
+            .setDuration(50)
+            .withEndAction {
+                imageView.animate()
+                    .scaleX(1f)
+                    .scaleY(1f)
+                    .setDuration(100)
+                    .withEndAction(onComplete)
+                    .start()
+            }
+            .start()
     }
 
-    private fun launchApp(appName: String, packageName: String, activityClassName: String?, userString: String) {
+    private fun homeAppClicked(location: Int, clickedView: ImageView? = null) {
+        if (prefs.getAppName(location).isEmpty()) {
+            showLongPressToast()
+        } else {
+            // Animate icon press and launch app
+            if (clickedView != null) {
+                animateIconPress(clickedView) {
+                    launchApp(
+                        prefs.getAppName(location),
+                        prefs.getAppPackage(location),
+                        prefs.getAppActivityClassName(location),
+                        prefs.getAppUser(location),
+                        clickedView
+                    )
+                }
+            } else {
+                launchApp(
+                    prefs.getAppName(location),
+                    prefs.getAppPackage(location),
+                    prefs.getAppActivityClassName(location),
+                    prefs.getAppUser(location),
+                    null
+                )
+            }
+        }
+    }
+
+    private fun launchApp(appName: String, packageName: String, activityClassName: String?, userString: String, sourceView: View? = null) {
         viewModel.selectedApp(
             AppModel(
                 appName,
@@ -469,7 +502,8 @@ class HomeFragment : Fragment(), View.OnClickListener, View.OnLongClickListener 
                 false,
                 getUserHandleFromString(requireContext(), userString)
             ),
-            Constants.FLAG_LAUNCH_APP
+            Constants.FLAG_LAUNCH_APP,
+            sourceView
         )
     }
 

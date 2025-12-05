@@ -26,7 +26,7 @@ import java.text.Normalizer
 class AppDrawerAdapter(
     private var flag: Int,
     private val appLabelGravity: Int,
-    private val appClickListener: (AppModel) -> Unit,
+    private val appClickListener: (AppModel, View?) -> Unit,
     private val appInfoListener: (AppModel) -> Unit,
     private val appDeleteListener: (AppModel) -> Unit,
     private val appHideListener: (AppModel, Int) -> Unit,
@@ -114,7 +114,7 @@ class AppDrawerAdapter(
                 && isBangSearch.not()
                 && flag == Constants.FLAG_LAUNCH_APP
                 && appFilteredList.size > 0
-            ) appClickListener(appFilteredList[0])
+            ) appClickListener(appFilteredList[0], null)
         } catch (e: Exception) {
             e.printStackTrace()
         }
@@ -138,7 +138,7 @@ class AppDrawerAdapter(
 
     fun launchFirstInList() {
         if (appFilteredList.size > 0)
-            appClickListener(appFilteredList[0])
+            appClickListener(appFilteredList[0], null)
     }
 
     class ViewHolder(private val binding: AdapterAppDrawerBinding) : RecyclerView.ViewHolder(binding.root) {
@@ -148,7 +148,7 @@ class AppDrawerAdapter(
             appLabelGravity: Int,
             myUserHandle: UserHandle,
             appModel: AppModel,
-            clickListener: (AppModel) -> Unit,
+            clickListener: (AppModel, View?) -> Unit,
             appDeleteListener: (AppModel) -> Unit,
             appInfoListener: (AppModel) -> Unit,
             appHideListener: (AppModel, Int) -> Unit,
@@ -162,7 +162,7 @@ class AppDrawerAdapter(
                 appTitle.gravity = appLabelGravity
                 otherProfileIndicator.isVisible = appModel.user != myUserHandle
 
-                appTitle.setOnClickListener { clickListener(appModel) }
+                appTitle.setOnClickListener { clickListener(appModel, it) }
                 appTitle.setOnLongClickListener {
                     if (appModel.appPackage.isNotEmpty()) {
                         appDelete.alpha = if (root.context.isSystemApp(appModel.appPackage)) 0.5f else 1.0f
