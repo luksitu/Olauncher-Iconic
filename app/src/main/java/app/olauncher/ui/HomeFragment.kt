@@ -303,11 +303,13 @@ class HomeFragment : Fragment(), View.OnClickListener, View.OnLongClickListener 
         val iconSizeDimen = when (prefs.iconSize) {
             Constants.IconSize.SMALL -> R.dimen.icon_size_small
             Constants.IconSize.LARGE -> R.dimen.icon_size_large
+            Constants.IconSize.XLARGE -> R.dimen.icon_size_xlarge
             else -> R.dimen.icon_size_medium
         }
         val iconPaddingDimen = when (prefs.iconSize) {
             Constants.IconSize.SMALL -> R.dimen.icon_padding_small
             Constants.IconSize.LARGE -> R.dimen.icon_padding_large
+            Constants.IconSize.XLARGE -> R.dimen.icon_padding_xlarge
             else -> R.dimen.icon_padding_medium
         }
         

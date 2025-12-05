@@ -736,6 +736,16 @@
                             android:paddingVertical="8dp"
                             android:text="@string/large" />
 
+                        <TextView
+                            android:id="@+id/iconXLarge"
+                            style="@style/TextSmall"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:paddingVertical="8dp"
+                            android:text="@string/xlarge" />
+
                     </LinearLayout>
 
                 </FrameLayout>

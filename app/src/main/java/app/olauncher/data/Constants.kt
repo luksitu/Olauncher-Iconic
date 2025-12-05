@@ -60,6 +60,7 @@ object Constants {
         const val SMALL = 0
         const val MEDIUM = 1
         const val LARGE = 2
+        const val XLARGE = 3
     }
 
     object CharacterIndicator {

@@ -140,6 +140,7 @@ class SettingsFragment : Fragment(), View.OnClickListener, View.OnLongClickListe
             R.id.iconSmall -> updateIconSize(Constants.IconSize.SMALL)
             R.id.iconMedium -> updateIconSize(Constants.IconSize.MEDIUM)
             R.id.iconLarge -> updateIconSize(Constants.IconSize.LARGE)
+            R.id.iconXLarge -> updateIconSize(Constants.IconSize.XLARGE)
 
             R.id.swipeLeftApp -> showAppListIfEnabled(Constants.FLAG_SET_SWIPE_LEFT_APP)
             R.id.swipeRightApp -> showAppListIfEnabled(Constants.FLAG_SET_SWIPE_RIGHT_APP)
@@ -244,6 +245,7 @@ class SettingsFragment : Fragment(), View.OnClickListener, View.OnLongClickListe
         binding.iconSmall?.setOnClickListener(this)
         binding.iconMedium?.setOnClickListener(this)
         binding.iconLarge?.setOnClickListener(this)
+        binding.iconXLarge?.setOnClickListener(this)
 
         binding.dailyWallpaper.setOnLongClickListener(this)
         binding.alignment.setOnLongClickListener(this)
@@ -508,6 +510,7 @@ class SettingsFragment : Fragment(), View.OnClickListener, View.OnLongClickListe
         binding.iconSizeValue?.text = when (prefs.iconSize) {
             Constants.IconSize.SMALL -> getString(R.string.small)
             Constants.IconSize.LARGE -> getString(R.string.large)
+            Constants.IconSize.XLARGE -> getString(R.string.xlarge)
             else -> getString(R.string.medium)
         }
     }
