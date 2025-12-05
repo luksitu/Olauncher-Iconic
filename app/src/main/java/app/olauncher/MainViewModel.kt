@@ -217,10 +217,10 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         }
 
         try {
-            launcher.startMainActivity(component, userHandle, options, null)
+            launcher.startMainActivity(component, userHandle, null, options)
         } catch (e: SecurityException) {
             try {
-                launcher.startMainActivity(component, android.os.Process.myUserHandle(), options, null)
+                launcher.startMainActivity(component, android.os.Process.myUserHandle(), null, options)
             } catch (e: Exception) {
                 appContext.showToast(appContext.getString(R.string.unable_to_open_app))
             }
