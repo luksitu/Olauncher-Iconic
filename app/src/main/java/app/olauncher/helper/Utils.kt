@@ -9,6 +9,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.ApplicationInfo
 import android.content.pm.LauncherApps
+import android.content.pm.ShortcutInfo
 import android.content.res.Configuration
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import android.graphics.Bitmap
@@ -109,6 +110,59 @@ suspend fun getAppsList(
                     }
                 }
             }
+            
+            // Load shortcuts (Android 7.1+)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N_MR1) {
+                for (profile in userManager.userProfiles) {
+                    try {
+                        val query = LauncherApps.ShortcutQuery()
+                        query.setQueryFlags(
+                            LauncherApps.ShortcutQuery.FLAG_MATCH_PINNED_BY_ANY_LAUNCHER
+                        )
+                        
+                        val shortcuts = launcherApps.getShortcuts(query, profile)
+                        shortcuts?.forEach { shortcut ->
+                            val shortcutLabel = shortcut.shortLabel?.toString() 
+                                ?: shortcut.longLabel?.toString() 
+                                ?: ""
+                            
+                            // Create identifier for shortcuts: "packageName:shortcutId"
+                            // Note: ShortcutInfo.package is a Kotlin keyword, so we use backticks
+                            val shortcutPackage = shortcut.`package`
+                            val shortcutIdentifier = "$shortcutPackage:${shortcut.id}"
+                            val shortcutLabelShown = prefs.getAppRenameLabel(shortcutIdentifier)
+                                .ifBlank { shortcutLabel }
+                            
+                            val shortcutModel = AppModel(
+                                appLabel = shortcutLabelShown,
+                                key = collator.getCollationKey(shortcutLabel),
+                                appPackage = shortcutPackage,
+                                activityClassName = null, // Shortcuts don't have activities
+                                isNew = false,
+                                user = profile,
+                                isShortcut = true,
+                                shortcutId = shortcut.id
+                            )
+                            
+                            // Check if this shortcut is hidden (format: "packageName:shortcutId|userHandle")
+                            val hiddenKey = "$shortcutIdentifier|${profile}"
+                            if (hiddenApps.contains(hiddenKey)) {
+                                if (includeHiddenApps) {
+                                    appList.add(shortcutModel)
+                                }
+                            } else {
+                                // Regular shortcut (not hidden)
+                                if (includeRegularApps) {
+                                    appList.add(shortcutModel)
+                                }
+                            }
+                        }
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                    }
+                }
+            }
+            
             appList.sortBy { it.appLabel.lowercase() }
 
         } catch (e: Exception) {

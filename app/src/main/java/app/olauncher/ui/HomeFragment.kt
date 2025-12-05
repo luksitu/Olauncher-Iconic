@@ -500,7 +500,9 @@ class HomeFragment : Fragment(), View.OnClickListener, View.OnLongClickListener 
                 packageName,
                 activityClassName,
                 false,
-                getUserHandleFromString(requireContext(), userString)
+                getUserHandleFromString(requireContext(), userString),
+                false, // isShortcut
+                null   // shortcutId
             ),
             Constants.FLAG_LAUNCH_APP,
             sourceView

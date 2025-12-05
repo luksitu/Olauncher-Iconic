@@ -56,14 +56,18 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     fun selectedApp(appModel: AppModel, flag: Int, sourceView: View? = null) {
         when (flag) {
             Constants.FLAG_LAUNCH_APP -> {
-                launchApp(appModel.appPackage, appModel.activityClassName, appModel.user, sourceView)
+                launchApp(appModel.appPackage, appModel.activityClassName, appModel.user, sourceView, appModel.isShortcut, appModel.shortcutId)
             }
 
             Constants.FLAG_HIDDEN_APPS -> {
-                launchApp(appModel.appPackage, appModel.activityClassName, appModel.user, sourceView)
+                launchApp(appModel.appPackage, appModel.activityClassName, appModel.user, sourceView, appModel.isShortcut, appModel.shortcutId)
             }
 
             Constants.FLAG_SET_HOME_APP_1 -> {
+                if (appModel.isShortcut) {
+                    appContext.showToast(appContext.getString(R.string.shortcuts_cannot_be_home_apps))
+                    return
+                }
                 prefs.appName1 = appModel.appLabel
                 prefs.appPackage1 = appModel.appPackage
                 prefs.appUser1 = appModel.user.toString()
@@ -72,6 +76,10 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
             }
 
             Constants.FLAG_SET_HOME_APP_2 -> {
+                if (appModel.isShortcut) {
+                    appContext.showToast(appContext.getString(R.string.shortcuts_cannot_be_home_apps))
+                    return
+                }
                 prefs.appName2 = appModel.appLabel
                 prefs.appPackage2 = appModel.appPackage
                 prefs.appUser2 = appModel.user.toString()
@@ -80,6 +88,10 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
             }
 
             Constants.FLAG_SET_HOME_APP_3 -> {
+                if (appModel.isShortcut) {
+                    appContext.showToast(appContext.getString(R.string.shortcuts_cannot_be_home_apps))
+                    return
+                }
                 prefs.appName3 = appModel.appLabel
                 prefs.appPackage3 = appModel.appPackage
                 prefs.appUser3 = appModel.user.toString()
@@ -88,6 +100,10 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
             }
 
             Constants.FLAG_SET_HOME_APP_4 -> {
+                if (appModel.isShortcut) {
+                    appContext.showToast(appContext.getString(R.string.shortcuts_cannot_be_home_apps))
+                    return
+                }
                 prefs.appName4 = appModel.appLabel
                 prefs.appPackage4 = appModel.appPackage
                 prefs.appUser4 = appModel.user.toString()
@@ -96,6 +112,10 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
             }
 
             Constants.FLAG_SET_HOME_APP_5 -> {
+                if (appModel.isShortcut) {
+                    appContext.showToast(appContext.getString(R.string.shortcuts_cannot_be_home_apps))
+                    return
+                }
                 prefs.appName5 = appModel.appLabel
                 prefs.appPackage5 = appModel.appPackage
                 prefs.appUser5 = appModel.user.toString()
@@ -104,6 +124,10 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
             }
 
             Constants.FLAG_SET_HOME_APP_6 -> {
+                if (appModel.isShortcut) {
+                    appContext.showToast(appContext.getString(R.string.shortcuts_cannot_be_home_apps))
+                    return
+                }
                 prefs.appName6 = appModel.appLabel
                 prefs.appPackage6 = appModel.appPackage
                 prefs.appUser6 = appModel.user.toString()
@@ -112,6 +136,10 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
             }
 
             Constants.FLAG_SET_HOME_APP_7 -> {
+                if (appModel.isShortcut) {
+                    appContext.showToast(appContext.getString(R.string.shortcuts_cannot_be_home_apps))
+                    return
+                }
                 prefs.appName7 = appModel.appLabel
                 prefs.appPackage7 = appModel.appPackage
                 prefs.appUser7 = appModel.user.toString()
@@ -120,6 +148,10 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
             }
 
             Constants.FLAG_SET_HOME_APP_8 -> {
+                if (appModel.isShortcut) {
+                    appContext.showToast(appContext.getString(R.string.shortcuts_cannot_be_home_apps))
+                    return
+                }
                 prefs.appName8 = appModel.appLabel
                 prefs.appPackage8 = appModel.appPackage
                 prefs.appUser8 = appModel.user.toString()
@@ -128,6 +160,10 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
             }
 
             Constants.FLAG_SET_HOME_APP_9 -> {
+                if (appModel.isShortcut) {
+                    appContext.showToast(appContext.getString(R.string.shortcuts_cannot_be_home_apps))
+                    return
+                }
                 prefs.appName9 = appModel.appLabel
                 prefs.appPackage9 = appModel.appPackage
                 prefs.appUser9 = appModel.user.toString()
@@ -136,6 +172,10 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
             }
 
             Constants.FLAG_SET_SWIPE_LEFT_APP -> {
+                if (appModel.isShortcut) {
+                    appContext.showToast(appContext.getString(R.string.shortcuts_cannot_be_home_apps))
+                    return
+                }
                 prefs.appNameSwipeLeft = appModel.appLabel
                 prefs.appPackageSwipeLeft = appModel.appPackage
                 prefs.appUserSwipeLeft = appModel.user.toString()
@@ -144,6 +184,10 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
             }
 
             Constants.FLAG_SET_SWIPE_RIGHT_APP -> {
+                if (appModel.isShortcut) {
+                    appContext.showToast(appContext.getString(R.string.shortcuts_cannot_be_home_apps))
+                    return
+                }
                 prefs.appNameSwipeRight = appModel.appLabel
                 prefs.appPackageSwipeRight = appModel.appPackage
                 prefs.appUserSwipeRight = appModel.user.toString()
@@ -152,12 +196,20 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
             }
 
             Constants.FLAG_SET_CLOCK_APP -> {
+                if (appModel.isShortcut) {
+                    appContext.showToast(appContext.getString(R.string.shortcuts_cannot_be_home_apps))
+                    return
+                }
                 prefs.clockAppPackage = appModel.appPackage
                 prefs.clockAppUser = appModel.user.toString()
                 prefs.clockAppClassName = appModel.activityClassName
             }
 
             Constants.FLAG_SET_CALENDAR_APP -> {
+                if (appModel.isShortcut) {
+                    appContext.showToast(appContext.getString(R.string.shortcuts_cannot_be_home_apps))
+                    return
+                }
                 prefs.calendarAppPackage = appModel.appPackage
                 prefs.calendarAppUser = appModel.user.toString()
                 prefs.calendarAppClassName = appModel.activityClassName
@@ -181,24 +233,8 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         updateSwipeApps.postValue(Unit)
     }
 
-    private fun launchApp(packageName: String, activityClassName: String?, userHandle: UserHandle, sourceView: View? = null) {
+    private fun launchApp(packageName: String, activityClassName: String?, userHandle: UserHandle, sourceView: View? = null, isShortcut: Boolean = false, shortcutId: String? = null) {
         val launcher = appContext.getSystemService(Context.LAUNCHER_APPS_SERVICE) as LauncherApps
-        val activityInfo = launcher.getActivityList(packageName, userHandle)
-
-        val component = if (activityClassName.isNullOrBlank()) {
-            // activityClassName will be null for hidden apps.
-            when (activityInfo.size) {
-                0 -> {
-                    appContext.showToast(appContext.getString(R.string.app_not_found))
-                    return
-                }
-
-                1 -> ComponentName(packageName, activityInfo[0].name)
-                else -> ComponentName(packageName, activityInfo[activityInfo.size - 1].name)
-            }
-        } else {
-            ComponentName(packageName, activityClassName)
-        }
 
         // Create launch animation options from the source view
         val options = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && sourceView != null) {
@@ -214,6 +250,52 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
             }
         } else {
             null
+        }
+
+        // Launch shortcut if applicable
+        if (isShortcut && shortcutId != null && Build.VERSION.SDK_INT >= Build.VERSION_CODES.N_MR1) {
+            try {
+                launcher.startShortcut(
+                    packageName,
+                    shortcutId,
+                    null, // sourceBounds
+                    options,
+                    userHandle
+                )
+            } catch (e: SecurityException) {
+                try {
+                    launcher.startShortcut(
+                        packageName,
+                        shortcutId,
+                        null,
+                        options,
+                        android.os.Process.myUserHandle()
+                    )
+                } catch (e: Exception) {
+                    appContext.showToast(appContext.getString(R.string.unable_to_open_app))
+                }
+            } catch (e: Exception) {
+                appContext.showToast(appContext.getString(R.string.unable_to_open_app))
+            }
+            return
+        }
+
+        // Launch regular app
+        val activityInfo = launcher.getActivityList(packageName, userHandle)
+
+        val component = if (activityClassName.isNullOrBlank()) {
+            // activityClassName will be null for hidden apps.
+            when (activityInfo.size) {
+                0 -> {
+                    appContext.showToast(appContext.getString(R.string.app_not_found))
+                    return
+                }
+
+                1 -> ComponentName(packageName, activityInfo[0].name)
+                else -> ComponentName(packageName, activityInfo[activityInfo.size - 1].name)
+            }
+        } else {
+            ComponentName(packageName, activityClassName)
         }
 
         try {

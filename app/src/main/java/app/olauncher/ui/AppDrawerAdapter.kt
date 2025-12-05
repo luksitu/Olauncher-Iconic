@@ -2,7 +2,10 @@ package app.olauncher.ui
 
 import android.content.Context
 import android.content.pm.LauncherApps
+import android.content.pm.ShortcutInfo
 import android.graphics.drawable.Drawable
+import android.graphics.drawable.Icon
+import android.os.Build
 import android.os.UserHandle
 import android.text.Editable
 import android.text.TextWatcher
@@ -37,8 +40,16 @@ class AppDrawerAdapter(
 
     companion object {
         val DIFF_CALLBACK = object : DiffUtil.ItemCallback<AppModel>() {
-            override fun areItemsTheSame(oldItem: AppModel, newItem: AppModel): Boolean =
-                oldItem.appPackage == newItem.appPackage && oldItem.user == newItem.user
+            override fun areItemsTheSame(oldItem: AppModel, newItem: AppModel): Boolean {
+                // For shortcuts, also compare shortcutId; for apps, just package and user
+                return if (oldItem.isShortcut && newItem.isShortcut) {
+                    oldItem.appPackage == newItem.appPackage && 
+                    oldItem.shortcutId == newItem.shortcutId && 
+                    oldItem.user == newItem.user
+                } else {
+                    oldItem.appPackage == newItem.appPackage && oldItem.user == newItem.user
+                }
+            }
 
             override fun areContentsTheSame(oldItem: AppModel, newItem: AppModel): Boolean =
                 oldItem == newItem
@@ -132,7 +143,7 @@ class AppDrawerAdapter(
 
     fun setAppList(appsList: MutableList<AppModel>) {
         // Add empty app for bottom padding in recyclerview
-        appsList.add(AppModel("", null, "", "", false, android.os.Process.myUserHandle()))
+        appsList.add(AppModel("", null, "", "", false, android.os.Process.myUserHandle(), false, null))
         this.appsList = appsList
         this.appFilteredList = appsList
         submitList(appsList)
@@ -167,7 +178,7 @@ class AppDrawerAdapter(
 
                 // Load and display app icon
                 if (appModel.appPackage.isNotEmpty()) {
-                    val icon = loadAppIcon(root.context, appModel.appPackage, appModel.user)
+                    val icon = loadAppIcon(root.context, appModel.appPackage, appModel.user, appModel.isShortcut, appModel.shortcutId)
                     appIcon.setImageDrawable(icon)
                     appIcon.visibility = View.VISIBLE
                 } else {
@@ -275,13 +286,29 @@ class AppDrawerAdapter(
             ).toString()
         }
 
-        private fun loadAppIcon(context: Context, packageName: String, userHandle: UserHandle): Drawable? {
+        private fun loadAppIcon(context: Context, packageName: String, userHandle: UserHandle, isShortcut: Boolean = false, shortcutId: String? = null): Drawable? {
             return try {
                 val launcher = context.getSystemService(Context.LAUNCHER_APPS_SERVICE) as LauncherApps
-                val activities = launcher.getActivityList(packageName, userHandle)
-                if (activities.isNotEmpty()) {
-                    activities[0].getBadgedIcon(0)
-                } else null
+                
+                if (isShortcut && shortcutId != null && Build.VERSION.SDK_INT >= Build.VERSION_CODES.N_MR1) {
+                    // Load shortcut icon
+                    val query = LauncherApps.ShortcutQuery()
+                    query.setShortcutIds(listOf(shortcutId))
+                    query.setQueryFlags(
+                        LauncherApps.ShortcutQuery.FLAG_MATCH_PINNED_BY_ANY_LAUNCHER
+                    )
+                    
+                    val shortcuts = launcher.getShortcuts(query, userHandle)
+                    shortcuts?.firstOrNull()?.let { shortcut ->
+                        launcher.getShortcutIconDrawable(shortcut, 0)
+                    }
+                } else {
+                    // Load regular app icon
+                    val activities = launcher.getActivityList(packageName, userHandle)
+                    if (activities.isNotEmpty()) {
+                        activities[0].getBadgedIcon(0)
+                    } else null
+                }
             } catch (e: Exception) {
                 e.printStackTrace()
                 null

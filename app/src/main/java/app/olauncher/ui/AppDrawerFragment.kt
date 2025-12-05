@@ -140,11 +140,24 @@ class AppDrawerFragment : Fragment() {
 
                 val newSet = mutableSetOf<String>()
                 newSet.addAll(prefs.hiddenApps)
-                if (flag == Constants.FLAG_HIDDEN_APPS) {
-                    newSet.remove(appModel.appPackage) // for backward compatibility
-                    newSet.remove(appModel.appPackage + "|" + appModel.user.toString())
-                } else
-                    newSet.add(appModel.appPackage + "|" + appModel.user.toString())
+                
+                if (appModel.isShortcut && appModel.shortcutId != null) {
+                    // Handle shortcut hiding: format is "packageName:shortcutId|userHandle"
+                    val shortcutKey = "${appModel.appPackage}:${appModel.shortcutId}|${appModel.user}"
+                    if (flag == Constants.FLAG_HIDDEN_APPS) {
+                        newSet.remove(shortcutKey)
+                    } else {
+                        newSet.add(shortcutKey)
+                    }
+                } else {
+                    // Handle regular app hiding: format is "packageName|userHandle"
+                    if (flag == Constants.FLAG_HIDDEN_APPS) {
+                        newSet.remove(appModel.appPackage) // for backward compatibility
+                        newSet.remove(appModel.appPackage + "|" + appModel.user.toString())
+                    } else {
+                        newSet.add(appModel.appPackage + "|" + appModel.user.toString())
+                    }
+                }
 
                 prefs.hiddenApps = newSet
                 if (newSet.isEmpty())
@@ -159,7 +172,13 @@ class AppDrawerFragment : Fragment() {
                 viewModel.getHiddenApps()
             },
             appRenameListener = { appModel, renameLabel ->
-                prefs.setAppRenameLabel(appModel.appPackage, renameLabel)
+                // Use appropriate identifier: "packageName:shortcutId" for shortcuts, "packageName" for apps
+                val identifier = if (appModel.isShortcut && appModel.shortcutId != null) {
+                    "${appModel.appPackage}:${appModel.shortcutId}"
+                } else {
+                    appModel.appPackage
+                }
+                prefs.setAppRenameLabel(identifier, renameLabel)
                 viewModel.getAppList()
             }
         )
